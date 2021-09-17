@@ -36,14 +36,15 @@ def show_julia_set(iterations_to_diverge: np.ndarray, file_name: str = None) -> 
     plt.show()
 
 
-c = -0.7 + .3j
-iterations = 1000
-iterations_to_diverge = julia_set(
-    c=c,
-    iterations=iterations,
-    x_limit=1.55,
-    y_limit=0.95,
-    ppl=1000,
-)
-file_name = f'images/julia_c={c}_itr={iterations}_w={iterations_to_diverge.shape[1]}_h={iterations_to_diverge.shape[0]}.jpg'
-show_julia_set(iterations_to_diverge, file_name)
+if __name__ == '__main__':
+    c = -0.7 + .3j
+    iterations = 1000
+    iterations_to_diverge = julia_set(
+        c=c,
+        iterations=iterations,
+        x_limit=1.55,
+        y_limit=0.95,
+        ppl=1000,
+    )
+    file_name = f'images/julia_c={c}_itr={iterations}_w={iterations_to_diverge.shape[1]}_h={iterations_to_diverge.shape[0]}.jpg'
+    show_julia_set(iterations_to_diverge, file_name)
