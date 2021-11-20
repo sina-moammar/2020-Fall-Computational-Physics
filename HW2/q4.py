@@ -23,9 +23,10 @@ class RandomBallisticDeposition:
 
         prev_time = 0
         for (i, current_time) in enumerate(samples_times):
+            self.samples_heights[i][:] = self.samples_heights[i - 1]
             randoms = np.random.randint(0, self.length, current_time - prev_time, dtype=int)
             indexes, counts = np.unique(randoms, return_counts=True)
-            self.samples_heights[i][indexes] = self.samples_heights[i - 1][indexes] + counts
+            self.samples_heights[i][indexes] += counts
             prev_time = current_time
 
         if save:
