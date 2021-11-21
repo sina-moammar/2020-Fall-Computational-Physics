@@ -134,3 +134,4 @@ dmypy.json
 */Report/*.log
 */Report/*.out
 */Report/*.gz
+test.*
