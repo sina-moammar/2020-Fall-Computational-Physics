@@ -29,7 +29,7 @@ def example(
     model = Ising2D(length, 1)
 
     for i, beta in enumerate(beta_s):
-        print(f"\r{beta}", end='')
+        print(f"\rbeta = {beta}", end='')
         model.set_temperature(1 / beta)
         model.equilibrate()
         relaxation_time = model.energy_relaxation_time()
