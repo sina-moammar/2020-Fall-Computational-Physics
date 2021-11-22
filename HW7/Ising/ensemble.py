@@ -1,10 +1,9 @@
 from __future__ import annotations
 import numpy as np
-import matplotlib.pyplot as plt
 import scipy.constants as CONSTANTS
 
 from .ising import Ising2D
-from .tools import bootstrap_error
+from .utils import bootstrap_error
 
 
 class Ensemble:
@@ -42,11 +41,11 @@ class Ensemble:
         self._reduced_susceptibility_error = None
 
 
-    def save(self, base_dir: str = "") -> None:
+    def save(self, base_dir: str = ".") -> None:
         """Saves ensemble data.
         
         Args:
-            base_dir (bool, optional): base directory. Defaults to "".
+            base_dir (bool, optional): base directory. Defaults to ".".
         """
         
         data = {

@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.optimize import curve_fit
-from typing import Any, Callable, List, Tuple, TypeVar
+from typing import Callable, List, Tuple, TypeVar
 
 
 def auto_correlation(data: List[float], lag: int) -> float:

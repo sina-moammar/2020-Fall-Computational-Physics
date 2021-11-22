@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from typing import List
+from tqdm import tqdm
 
 from .ising import Ising2D
 from .ensemble import Ensemble
@@ -26,26 +27,28 @@ def example(
     heat_capacity_s = np.zeros(len(beta_s))
     heat_capacity_err_s = np.zeros(len(beta_s))
     
-    model = Ising2D(length, 1)
-
-    for i, beta in enumerate(beta_s):
-        print(f"\rbeta = {beta}", end='')
-        model.set_temperature(1 / beta)
-        model.equilibrate()
-        relaxation_time = model.energy_relaxation_time()
-        
-        ensemble = Ensemble(model)
-        ensemble.get_data(ensemble_size, relaxation_time)
-        energy_s[i] = ensemble.get_reduced_energy() / ensemble.size
-        energy_err_s[i] = ensemble.get_reduced_energy_error() / ensemble.size
-        magnetization_s[i] = ensemble.get_magnetisation() / ensemble.size
-        magnetization_err_s[i] = ensemble.get_magnetisation_error() / ensemble.size
-        susceptibility_s[i] = ensemble.get_reduced_susceptibility() / ensemble.size
-        susceptibility_err_s[i] = ensemble.get_reduced_susceptibility_error() / ensemble.size
-        spatial_corr_length_s[i] = ensemble.get_spatial_corr_length()
-        spatial_corr_length_err_s[i] = ensemble.get_spatial_corr_length_error()
-        heat_capacity_s[i] = ensemble.get_reduced_heat_capacity() / ensemble.size
-        heat_capacity_err_s[i] = ensemble.get_reduced_heat_capacity_error() / ensemble.size
+    model = Ising2D(length, name='example')
+    
+    with tqdm(beta_s) as t:
+        for i, beta in enumerate(t):
+            t.set_description(f"beta = {beta}")
+            
+            model.set_temperature(1 / beta)
+            model.equilibrate()
+            relaxation_time = model.energy_relaxation_time()
+            
+            ensemble = Ensemble(model)
+            ensemble.get_data(ensemble_size, relaxation_time)
+            energy_s[i] = ensemble.get_reduced_energy() / ensemble.size
+            energy_err_s[i] = ensemble.get_reduced_energy_error() / ensemble.size
+            magnetization_s[i] = ensemble.get_magnetisation() / ensemble.size
+            magnetization_err_s[i] = ensemble.get_magnetisation_error() / ensemble.size
+            susceptibility_s[i] = ensemble.get_reduced_susceptibility() / ensemble.size
+            susceptibility_err_s[i] = ensemble.get_reduced_susceptibility_error() / ensemble.size
+            spatial_corr_length_s[i] = ensemble.get_spatial_corr_length()
+            spatial_corr_length_err_s[i] = ensemble.get_spatial_corr_length_error()
+            heat_capacity_s[i] = ensemble.get_reduced_heat_capacity() / ensemble.size
+            heat_capacity_err_s[i] = ensemble.get_reduced_heat_capacity_error() / ensemble.size
         
     plt.errorbar(beta_s, energy_s, yerr=energy_err_s, ecolor='red', capsize=2, marker='o',
                  markersize=3, linestyle='-', linewidth=1.5, elinewidth=1.5, label=f'L = {length}')
@@ -65,16 +68,19 @@ def example(
                  markersize=3, linestyle='-', linewidth=1.5, elinewidth=1.5, label=f'L = {length}')
     plt.xlabel(r'$\beta \ (1/J)$')
     plt.ylabel(r'Heat Capacity per Spin')
+    plt.legend()
     plt.show()
 
     plt.errorbar(beta_s, susceptibility_s, yerr=susceptibility_err_s, ecolor='red', capsize=2, marker='o',
                  markersize=3, linestyle='-', linewidth=1.5, elinewidth=1.5, label=f'L = {length}')
     plt.xlabel(r'$\beta \ (1/J)$')
-    plt.ylabel(r'Magnetic Susceptibility per Spin')
+    plt.ylabel(r'Magnetic Susceptibility per Spin ($\chi$)')
+    plt.legend()
     plt.show()
 
     plt.errorbar(beta_s, spatial_corr_length_s, yerr=spatial_corr_length_err_s, ecolor='red', capsize=2, marker='o',
                  markersize=3, linestyle='-', linewidth=1.5, elinewidth=1.5, label=f'L = {length}')
     plt.xlabel(r'$\beta \ (1/J)$')
     plt.ylabel(r'Correlation Length ($\xi$)')
+    plt.legend()
     plt.show()

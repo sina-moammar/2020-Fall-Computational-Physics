@@ -4,19 +4,19 @@ import matplotlib.pyplot as plt
 import scipy.constants as CONSTANTS
 from typing import Dict, List, Tuple
 
-from .tools import auto_correlation, exp_characteristic_length
+from .utils import auto_correlation, exp_characteristic_length
 
 
 class Ising2D:
     # in infinty temperature every move is accepted
     _diff_energy_exp_map = np.ones(17)
 
-    def __init__(self, length: int, J: float, name: str = None) -> None:
+    def __init__(self, length: int, J: float = 1.0, name: str = None) -> None:
         """Constructs an 2D Ising model
 
         Args:
             length (int): length of 2D lattice
-            J (float): interaction strength
+            J (float): interaction strength. Defaults to 1.0.
             name (str, optional): model name. Defaults to None.
         """
         
@@ -294,12 +294,12 @@ class Ising2D:
             return 0, 0
 
 
-    def show(self, save: bool = False, base_dir: str = "") -> None:
+    def show(self, save: bool = False, base_dir: str = ".") -> None:
         """Shows the grid.
 
         Args:
             save (bool, optional): save image. Defaults to False.
-            base_dir (bool, optional): base directory. Defaults to "".
+            base_dir (bool, optional): base directory. Defaults to ".".
         """
         
         _, ax = plt.subplots()
